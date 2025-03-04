@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  // id                Int           @id @default(autoincrement())
+  cl_id                       Int           @id @unique
+  // Features
+  transaction_freq            Int           @default(0)
+  avg_transaction_amount      Float         @default(0)
+  time_since_last_transaction Int           @default(0)
+  mcc_diversity               Int           @default(0)
+  preferred_channel           String        @default("")
+  mean_hour                   Float         @default(0)
+  std_hour                    Float         @default(0)
+  mean_day_of_week            Float         @default(0)
+  std_day_of_week             Float         @default(0)
+  mean_month                  Float         @default(0)
+  std_month                   Float         @default(0)
+  churn_probability           Float?
+  last_predicted              DateTime?
+  transactions                Transaction[]
+  createdAt                   DateTime      @default(now())
+}
+
+model Transaction {
+  id           Int      @id @default(autoincrement())
+  PERIOD       DateTime
+  cl_id        Int
+  MCC          Int
+  channel_type String?
+  currency     Int
+  TRDATETIME   DateTime
+  amount       Float
+  trx_category String
+  target_sum   Float
+  customer     Customer @relation(fields: [cl_id], references: [cl_id])
+  createdAt    DateTime @default(now())
+  target_flag  Boolean  @default(false)
+}
+
+model ModelVersion {
+  id        Int      @id @default(autoincrement())
+  version   String   @unique
+  path      String
+  metrics   Json
+  trainedAt DateTime @default(now())
+}
+
+// model Customer {
+//   id          Int      @id @default(autoincrement())
+//   cl_id       Int      @unique
+//   features    Json     // Stored feature vector
+//   churnRisk   Float?
+//   lastPredictedAt DateTime?
+//   transactions Transaction[]
+// }
+
+// model Transaction {
+//   id           Int      @id @default(autoincrement())
+//   PERIOD       DateTime
+//   cl_id        Int
+//   MCC          Int
+//   channel_type String?
+//   currency     Int
+//   TRDATETIME   DateTime
+//   amount       Float
+//   trx_category String
+//   target_sum   Float
+//   customer     Customer @relation(fields: [cl_id], references: [cl_id])
+// }
+
+// model ModelVersion {
+//   id          Int      @id @default(autoincrement())
+//   version     String   @unique
+//   path        String
+//   accuracy    Float?
+//   trainedAt   DateTime @default(now())
+// }
