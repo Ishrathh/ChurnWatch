@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emscripten-forge/joblib": "^1.4.0-py311had7285e-0",
     "@prisma/client": "^6.3.0",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-select": "^2.1.6",
