@@ -9,8 +9,9 @@ export async function GET() {
     try {
         const customers = await prisma.customer.findMany();
         return NextResponse.json({ customers })
-    } catch (error: any) {
-        console.error('Failed to fetch customers:' + error + ' ' + error.stack);
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error('Failed to fetch customers:', errorMessage);
         return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 });
     }
 }
@@ -55,8 +56,9 @@ export async function POST(req: Request) {
         }, {
             status: 200
         });
-    } catch (error: any) {
-        console.error('Failed to fetch customers:' + error + ' ' + error.stack);
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error('Failed to churn customer:', errorMessage);
         return NextResponse.json({ error: 'Failed to churn customer' }, { status: 500 });
     }
 }

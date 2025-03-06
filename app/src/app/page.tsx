@@ -43,9 +43,14 @@ export default function Dashboard() {
       fetchCustomers();
 
       toast.success(data.message);
-    } catch (error: any) {
-      console.error('Error during reset: ' + error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error during reset: ' + error);
+        toast.error(error.message);
+      } else {
+        console.error('An unknown error occurred');
+        toast.error('An unknown error occurred');
+      }
     }
   }
 
@@ -61,9 +66,14 @@ export default function Dashboard() {
 
       toast.success(data.message);
       fetchCustomers();
-    } catch (error: any) {
-      console.error('Error during customer churn:', error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error during customer churn:', error);
+        toast.error(error.message);
+      } else {
+        console.error('An unknown error occurred');
+        toast.error('An unknown error occurred');
+      }
     }
   }
 
@@ -86,9 +96,14 @@ export default function Dashboard() {
 
       setFile(null);
       fetchCustomers();
-    } catch (error: any) {
-      console.error('Error uploading file:', error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error uploading file:', error);
+        toast.error(error.message);
+      } else {
+        console.error('An unknown error occurred');
+        toast.error('An unknown error occurred');
+      }
     }
   };
 
@@ -104,9 +119,14 @@ export default function Dashboard() {
 
       fetchCustomers();
       fetchModels();
-    } catch (error: any) {
-      console.error('Error during model retraining:', error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error during model retraining:', error);
+        toast.error(error.message);
+      } else {
+        console.error('An unknown error occurred');
+        toast.error('An unknown error occurred');
+      }
     }
   };
 
