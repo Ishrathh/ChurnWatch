@@ -33,6 +33,27 @@ export default function Dashboard() {
 
   useEffect(() => { fetchCustomers(); fetchModels(); }, []);
 
+  const handlePredict = async (customerId: number) => {
+    try {
+      const response = await fetch('/api/predict', {
+        method: 'POST',
+        body: JSON.stringify({ cl_id: customerId, model_version: selectedModel }),
+      });
+
+      if (!response.ok) throw new Error('Failed to predict churn');
+
+      await fetchCustomers();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error during prediction: ' + error);
+        toast.error(error.message);
+      } else {
+        console.error('An unknown error occurred');
+        toast.error('An unknown error occurred');
+      }
+    }
+  };
+
   const handleReset = async () => {
     try {
       const response = await fetch('/api/reset', { method: 'POST' });
@@ -252,17 +273,13 @@ export default function Dashboard() {
                   </TableCell>
 
                   <TableCell className='flex justify-center items-center gap-2'>
-                    <Button
-                      onClick={async () => {
-                        await fetch('/api/predict', {
-                          method: 'POST',
-                          body: JSON.stringify({ cl_id: customer.cl_id, model_version: selectedModel })
-                        });
-                        fetchCustomers();
-                      }}
-                    >
-                      {customer.churn_probability !== null ? 'Re-predict' : 'Predict'}
-                    </Button>
+                    {customer.churn_probability !== 1 && (
+                      <Button
+                        onClick={async () => await handlePredict(customer.cl_id)}
+                      >
+                        {customer.churn_probability !== null ? 'Re-predict' : 'Predict'}
+                      </Button>
+                    )}
 
                     {customer.churn_probability === null
                       ? null
@@ -278,10 +295,7 @@ export default function Dashboard() {
                           ?
                           <Button
                             className='bg-green-500'
-                            onClick={async () => {
-                              await handleChurn(customer.cl_id, false)
-                              fetchCustomers();
-                            }}
+                            onClick={async () => await handleChurn(customer.cl_id, false)}
                           >
                             Mark as unchurned
                           </Button>
