@@ -37,8 +37,8 @@ export async function POST(req: Request) {
             await prisma.customer.update({
                 where: { cl_id },
                 data: {
-                    churn_probability: 0,
-                    last_predicted: new Date()
+                    churn_probability: null,
+                    last_predicted: null
                 }
             })
             await prisma.transaction.updateMany({
