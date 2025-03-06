@@ -1,0 +1,9 @@
+{
+    "presets": [
+        "next/babel", // Uses Next.js Babel preset
+        "@babel/preset-env", // For modern JavaScript support
+        "@babel/preset-react", // For React
+        "@babel/preset-typescript" // If you're using TypeScript
+    ],
+    "plugins": []
+}

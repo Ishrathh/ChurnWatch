@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Dashboard component unchanged 1`] = `
+<div>
+  <section
+    class="p-8"
+  >
+    <h1
+      class="flex justify-center w-full text-2xl tracking-tight font-bold mb-8"
+    >
+      ChurnWatch Prediction Dashboard
+    </h1>
+    <div
+      class="flex justify-between gap-8"
+    >
+      <div
+        class="rounded-xl border bg-card text-card-foreground shadow mb-8 w-full"
+      >
+        <div
+          class="flex flex-col space-y-1.5 p-6"
+        >
+          <div
+            class="font-semibold leading-none tracking-tight"
+          >
+            Dataset Management
+          </div>
+        </div>
+        <div
+          class="p-6 pt-0 flex gap-4"
+        >
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm max-w-sm hover:bg-primary-foreground"
+            type="file"
+          />
+          <button
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+            disabled=""
+          >
+            Upload CSV
+          </button>
+          <button
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 bg-red-800"
+          >
+            Reset All Data
+          </button>
+        </div>
+      </div>
+      <div
+        class="rounded-xl border bg-card text-card-foreground shadow mb-8 w-full"
+      >
+        <div
+          class="flex flex-col space-y-1.5 p-6"
+        >
+          <div
+            class="font-semibold leading-none tracking-tight"
+          >
+            Model Management
+          </div>
+        </div>
+        <div
+          class="p-6 pt-0 space-y-4"
+        >
+          <div
+            class="border border-gray-300 rounded-md p-4 grid grid-cols-2"
+          >
+            <p
+              class="text-sm text-gray-600"
+            >
+              Current Model: 
+              Default
+            </p>
+            <p
+              class="text-sm text-gray-600"
+            >
+              Trained: 
+              At launch
+            </p>
+            <p
+              class="text-sm text-gray-600"
+            >
+              Accuracy: 
+              72.50%
+            </p>
+            <p
+              class="text-sm text-gray-600"
+            >
+              Precision: 
+              77.20%
+            </p>
+            <p
+              class="text-sm text-gray-600"
+            >
+              Recall: 
+              73.36%
+            </p>
+            <p
+              class="text-sm text-gray-600"
+            >
+              F1 Score: 
+              75.23%
+            </p>
+          </div>
+          <div
+            class="flex gap-4"
+          >
+            <button
+              aria-autocomplete="none"
+              aria-controls="radix-:r0:"
+              aria-expanded="false"
+              class="flex h-9 items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 w-full"
+              data-state="closed"
+              dir="ltr"
+              role="combobox"
+              type="button"
+            >
+              <span
+                style="pointer-events: none;"
+              >
+                Default
+              </span>
+              <svg
+                aria-hidden="true"
+                class="h-4 w-4 opacity-50"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                />
+              </svg>
+            </button>
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+            >
+              Retrain Model
+            </button>
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 bg-red-800"
+            >
+              Delete Model
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="rounded-xl border bg-card text-card-foreground shadow"
+    >
+      <div
+        class="flex flex-col space-y-1.5 p-6"
+      >
+        <div
+          class="font-semibold leading-none tracking-tight"
+        >
+          Customer Churn Predictions
+        </div>
+      </div>
+      <div
+        class="p-6 pt-0"
+      >
+        <div
+          class="relative w-full overflow-auto"
+        >
+          <table
+            class="w-full caption-bottom text-sm"
+          >
+            <thead
+              class="[&_tr]:border-b"
+            >
+              <tr
+                class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted [&_*]:text-center"
+              >
+                <th
+                  class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                >
+                  Customer ID
+                </th>
+                <th
+                  class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                >
+                  Churn Probability
+                </th>
+                <th
+                  class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                >
+                  Last Predicted
+                </th>
+                <th
+                  class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="[&_tr:last-child]:border-0"
+            >
+              <tr
+                class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+              >
+                <td
+                  class="align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-center p-2"
+                  colspan="4"
+                >
+                  No customers found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
