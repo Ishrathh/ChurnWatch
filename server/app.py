@@ -2,8 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 import pickle
-from server.train import retrain_model
 import os
+
+try:
+    # For running the Flask server
+    from train import retrain_model
+except ModuleNotFoundError:
+    # Import for running pytest (requires to be imported as a module)
+    from server.train import retrain_model
 
 app = Flask(__name__)
 CORS(app)
