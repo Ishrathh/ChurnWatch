@@ -4,6 +4,23 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const FLASK_URL = process.env.FLASK_URL || 'http://localhost:5000';
 
+type Transaction = {
+    PERIOD: {
+        toLocaleDateString: (arg0: string, arg1: { year: string; month: string; day: string; }) => any;
+    };
+    cl_id: any;
+    MCC: any;
+    channel_type: any;
+    currency: any;
+    TRDATETIME: {
+        toISOString: () => string;
+    };
+    amount: any;
+    trx_category: any;
+    target_sum: any;
+    target_flag: boolean;
+}
+
 export async function POST() {
     try {
         // Get all transactions from database
@@ -13,7 +30,7 @@ export async function POST() {
         const csvData = [
             ['PERIOD', 'cl_id', 'MCC', 'channel_type', 'currency',
                 'TRDATETIME', 'amount', 'trx_category', 'target_sum', 'target_flag'],
-            ...transactions.map(t => [
+            ...transactions.map((t: Transaction) => [
                 t.PERIOD.toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }),
                 t.cl_id,
                 t.MCC,

@@ -22,6 +22,7 @@ export async function updateCustomerFeatures(cl_id: number) {
         trx_category: t.trx_category,
         target_sum: t.target_sum,
         createdAt: t.createdAt,
+        target_flag: t.target_flag
     }));
 
     df.sort((a, b) => new Date(b.TRDATETIME).getTime() - new Date(a.TRDATETIME).getTime());
