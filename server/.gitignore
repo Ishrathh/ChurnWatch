@@ -1,3 +1,7 @@
+# All non-default models
+models/*.pkl
+!models/default.pkl
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
