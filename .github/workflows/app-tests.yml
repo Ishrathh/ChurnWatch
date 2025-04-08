@@ -1,0 +1,37 @@
+name: App Tests
+
+on:
+  push:
+    paths:
+      - 'app/**'
+      - '.github/workflows/app-tests.yml'
+  pull_request:
+    paths:
+      - 'app/**'
+      - '.github/workflows/app-tests.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Run tests
+      run: yarn test 
