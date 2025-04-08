@@ -1,7 +1,10 @@
 {
-  "name": "bank-churn",
-  "version": "0.1.0",
+  "name": "churnwatch",
+  "version": "0.2.0",
   "private": true,
+  "engines": {
+    "node": ">=18.x"
+  },
   "scripts": {
     "dev": "next dev",
     "dev:turbopack": "next dev --turbopack",
