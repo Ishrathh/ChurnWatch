@@ -86,5 +86,31 @@ def retrain():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/model/delete', methods=['POST'])
+def delete_model():
+    try:
+        data = request.json
+        model_version = data.get('model_version')
+
+        if not model_version:
+            return jsonify({'error': 'Model version is required'}), 400
+
+        if model_version == 'default':
+            return jsonify({'error': 'Cannot delete the default model'}), 400
+
+        model_path = os.path.join('models', f'{model_version}.pkl')
+
+        if not os.path.exists(model_path):
+            return jsonify({'error': 'Model not found'}), 404
+
+        # Delete the model file
+        os.remove(model_path)
+
+        return jsonify({'message': 'Model deleted successfully'})
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
