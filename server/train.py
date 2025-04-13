@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import StackingClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -102,7 +103,8 @@ def retrain_model(df):
         ('Gradient Boosting', GradientBoostingClassifier(random_state=42)),
         ('Logistic Regression', LogisticRegression(max_iter=1000, random_state=42)),
         ('Neural Network', MLPClassifier(hidden_layer_sizes=(64, 32),
-                                         max_iter=1000, random_state=42))
+                                         max_iter=1000, random_state=42)),
+        ('XGBoost', xgb.XGBClassifier(random_state=42))
     ]
 
     model = Pipeline(steps=[
