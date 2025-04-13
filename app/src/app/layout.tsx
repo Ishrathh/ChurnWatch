@@ -1,30 +1,35 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Navigation from "@/components/Navigation";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist",
-  subsets: ["latin"],
-})
+const inter = Inter({ subsets: ["latin"] });
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist",
+//   subsets: ["latin"],
+// })
 
 export const metadata: Metadata = {
-  title: "ChurnWatch",
-  description: "Predict customer churn with machine learning",
+  title: "ChurnWatch - Customer Churn Prediction",
+  description: "Predict and prevent customer churn with advanced machine learning",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistMono.className} antialiased`}
-      >
-        {children}
-        <Toaster richColors />
+      <body className={inter.className}>
+        <div className="flex flex-col min-h-screen">
+          <Navigation />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Toaster richColors />
+        </div>
       </body>
     </html>
   );

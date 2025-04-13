@@ -1,317 +1,134 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Customer } from '@prisma/client';
-import { toast } from 'sonner';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function Dashboard() {
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [file, setFile] = useState<File | null>(null);
-
-  const [models, setModels] = useState<ModelVersion[]>([]);
-  const [selectedModel, setSelectedModel] = useState<string>('default');
-
-  const fetchCustomers = async () => {
-    const res = await fetch('/api/customers', { method: 'GET' });
-    const data = await res.json();
-
-    setCustomers(data.customers);
-  };
-
-  const fetchModels = async () => {
-    const res = await fetch('/api/model', { method: 'GET' });
-    const data = await res.json();
-
-    console.log(data.models);
-
-    setModels(data.models);
-  }
-
-  useEffect(() => { fetchCustomers(); fetchModels(); }, []);
-
-  const handlePredict = async (customerId: number) => {
-    try {
-      const response = await fetch('/api/predict', {
-        method: 'POST',
-        body: JSON.stringify({ cl_id: customerId, model_version: selectedModel }),
-      });
-
-      if (!response.ok) throw new Error('Failed to predict churn');
-
-      await fetchCustomers();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error during prediction: ' + error);
-        toast.error(error.message);
-      } else {
-        console.error('An unknown error occurred');
-        toast.error('An unknown error occurred');
-      }
-    }
-  };
-
-  const handleReset = async () => {
-    try {
-      const response = await fetch('/api/reset', { method: 'POST' });
-
-      if (!response.ok) throw new Error('Failed to reset data');
-
-      const data = await response.json();
-      fetchCustomers();
-
-      toast.success(data.message);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error during reset: ' + error);
-        toast.error(error.message);
-      } else {
-        console.error('An unknown error occurred');
-        toast.error('An unknown error occurred');
-      }
-    }
-  }
-
-  const handleChurn = async (cl_id: number, churn: boolean) => {
-    try {
-      const response = await fetch('/api/customers', {
-        method: 'POST',
-        body: JSON.stringify({ cl_id, churn })
-      });
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error);
-
-      toast.success(data.message);
-      fetchCustomers();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error during customer churn:', error);
-        toast.error(error.message);
-      } else {
-        console.error('An unknown error occurred');
-        toast.error('An unknown error occurred');
-      }
-    }
-  }
-
-  const handleUpload = async () => {
-    if (!file) return;
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error);
-
-      toast.success(data.message);
-
-      setFile(null);
-      fetchCustomers();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error uploading file:', error);
-        toast.error(error.message);
-      } else {
-        console.error('An unknown error occurred');
-        toast.error('An unknown error occurred');
-      }
-    }
-  };
-
-  const handleRetrain = async () => {
-    try {
-      toast.info('Model retraining in progress...');
-      const res = await fetch('/api/retrain', { method: 'POST' });
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error);
-
-      toast.success(data.message);
-
-      fetchCustomers();
-      fetchModels();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error during model retraining:', error);
-        toast.error(error.message);
-      } else {
-        console.error('An unknown error occurred');
-        toast.error('An unknown error occurred');
-      }
-    }
-  };
-
-  interface ExtendedMetrics {
-    accuracy: number;
-    precision: number;
-    recall: number;
-    f1: number;
-  }
-
-  interface ModelVersion {
-    id: string;
-    path: string;
-    version: string;
-    trainedAt: Date;
-    metrics: ExtendedMetrics;
-  }
-
-  const selModel: ModelVersion[] = models.filter((model) => model.version === selectedModel);
-
+export default function Home() {
   return (
-    <section className="p-8">
-      <h1 className="flex justify-center w-full text-2xl tracking-tight font-bold mb-8">ChurnWatch Prediction Dashboard</h1>
-
-      <div className='flex justify-between gap-8'>
-        <Card className="mb-8 w-full">
-          <CardHeader>
-            <CardTitle>Dataset Management</CardTitle>
-          </CardHeader>
-          <CardContent className="flex gap-4">
-            <Input
-              type="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="max-w-sm hover:bg-primary-foreground"
-            />
-            <Button disabled={!file} onClick={handleUpload}>Upload CSV</Button>
-            <Button className='bg-red-800' onClick={handleReset}>Reset All Data</Button>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-8 w-full">
-          <CardHeader>
-            <CardTitle>Model Management</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className='border border-gray-300 rounded-md p-4 grid grid-cols-2'>
-              <p className='text-sm text-gray-600'>Current Model: {selModel.length > 0 ? selModel[0].version : 'Default'}</p>
-              <p className='text-sm text-gray-600'>Trained: {selModel.length > 0 ? new Date(selModel[0].trainedAt).toLocaleDateString('en-US', {
-                minute: 'numeric',
-                hour12: true,
-                hour: '2-digit'
-              }) : 'At launch'}</p>
-              <p className='text-sm text-gray-600'>
-                Accuracy: {selModel.length > 0 && selModel[0].metrics ? (selModel[0].metrics.accuracy * 100).toFixed(2) + '%' : '72.50%'}
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* Hero Section */}
+      <div className="relative h-screen flex items-center">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://images.unsplash.com/photo-1607944024060-0450380ddd33?auto=format&fit=crop&q=80&w=2000"
+            alt="Data analytics dashboard"
+            fill
+            priority
+            className="object-cover brightness-50"
+            sizes="100vw"
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl">
+                <span className="block">Predict Customer Churn</span>
+                <span className="block text-blue-400">with ChurnWatch</span>
+              </h1>
+              <p className="mt-6 text-xl text-gray-300 max-w-3xl">
+                ChurnWatch helps businesses predict and prevent customer churn using advanced machine learning algorithms. Get actionable insights to retain your valuable customers.
               </p>
-              <p className='text-sm text-gray-600'>
-                Precision: {selModel.length > 0 && selModel[0].metrics ? (selModel[0].metrics.precision * 100).toFixed(2) + '%' : '77.20%'}
-              </p>
-              <p className='text-sm text-gray-600'>
-                Recall: {selModel.length > 0 && selModel[0].metrics ? (selModel[0].metrics.recall * 100).toFixed(2) + '%' : '73.36%'}
-              </p>
-              <p className='text-sm text-gray-600'>
-                F1 Score: {selModel.length > 0 && selModel[0].metrics ? (selModel[0].metrics.f1 * 100).toFixed(2) + '%' : '75.23%'}
-              </p>
+              <div className="mt-8">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-colors duration-200"
+                >
+                  Get Started
+                </Link>
+              </div>
             </div>
-            <div className='flex gap-4'>
-              <Select value={selectedModel} onValueChange={setSelectedModel}>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select Model'></SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='default' key='default-model'>Default</SelectItem>
-                  {models.map((model) => (
-                    <SelectItem value={model.version} key={model.id}>{model.version}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Button onClick={handleRetrain}>Retrain Model</Button>
-              <Button className='bg-red-800'>Delete Model</Button>
+            <div className="hidden lg:block relative h-[600px] rounded-lg overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 z-10"></div>
+              <Image
+                src="https://images.unsplash.com/photo-1607944024060-0450380ddd33?auto=format&fit=crop&q=80&w=1200"
+                alt="Data analytics dashboard"
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
+    </div>
+  );
+}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Customer Churn Predictions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className='[&_*]:text-center'>
-                <TableHead>Customer ID</TableHead>
-                <TableHead>Churn Probability</TableHead>
-                <TableHead>Last Predicted</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+const Features = () => {
+  {/* Feature Section */ }
+  return (
+    <div className="py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:text-center">
+          <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
+          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            Why Choose ChurnWatch?
+          </p>
+        </div>
 
-            <TableBody>
-              {customers === null && (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center p-2">Loading...</TableCell>
-                </TableRow>
-              )}
-              {customers && customers.length > 0 ? customers.map((customer) => (
-                <TableRow key={customer.cl_id}>
-                  <TableCell>{customer.cl_id}</TableCell>
+        <div className="mt-10">
+          <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+            {/* Feature 1 */}
+            <div className="relative">
+              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className="ml-16">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Advanced Analytics</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  Leverage powerful machine learning algorithms to predict customer churn with high accuracy.
+                </p>
+              </div>
+            </div>
 
-                  <TableCell className='text-center'>
-                    {customer.churn_probability !== null
-                      ? `${(customer.churn_probability * 100).toFixed(1)}%`
-                      : 'Not predicted'}
-                  </TableCell>
-                  <TableCell className='text-center'>
-                    {customer.last_predicted
-                      ? new Date(customer.last_predicted).toLocaleDateString('en-US', {
-                        minute: 'numeric',
-                        hour12: true,
-                        hour: '2-digit'
-                      })
-                      : 'Never'}
-                  </TableCell>
+            {/* Feature 2 */}
+            <div className="relative">
+              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div className="ml-16">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Real-time Predictions</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  Get instant predictions and insights to take immediate action on at-risk customers.
+                </p>
+              </div>
+            </div>
 
-                  <TableCell className='flex justify-center items-center gap-2'>
-                    {customer.churn_probability !== 1 && (
-                      <Button
-                        onClick={async () => await handlePredict(customer.cl_id)}
-                      >
-                        {customer.churn_probability !== null ? 'Re-predict' : 'Predict'}
-                      </Button>
-                    )}
+            {/* Feature 3 */}
+            <div className="relative">
+              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div className="ml-16">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Secure & Reliable</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  Your data is protected with enterprise-grade security and reliable infrastructure.
+                </p>
+              </div>
+            </div>
 
-                    {customer.churn_probability === null
-                      ? null
-                      : customer.churn_probability > 0 && customer.churn_probability !== 1
-                        ?
-                        <Button
-                          className='bg-red-500'
-                          onClick={async () => await handleChurn(customer.cl_id, true)}
-                        >
-                          Mark as churned
-                        </Button>
-                        : customer.churn_probability === 1
-                          ?
-                          <Button
-                            className='bg-green-500'
-                            onClick={async () => await handleChurn(customer.cl_id, false)}
-                          >
-                            Mark as unchurned
-                          </Button>
-                          : null
-                    }
-                  </TableCell>
-                </TableRow>
-              )) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center p-2">No customers found</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </section>
+            {/* Feature 4 */}
+            <div className="relative">
+              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              </div>
+              <div className="ml-16">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Easy Integration</h3>
+                <p className="mt-2 text-base text-gray-500">
+                  Seamlessly integrate with your existing systems and workflows.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
