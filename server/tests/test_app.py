@@ -4,6 +4,8 @@ from server.app import app
 import io
 import pandas as pd
 from datetime import datetime, timedelta
+import os
+import pickle
 
 
 @pytest.fixture
@@ -67,3 +69,46 @@ def test_retrain(client):
     assert 'model_path' in data
     assert 'metrics' in data
     assert 'version' in data
+
+
+def test_delete_model(client):
+    # Test deleting a non-existent model
+    response = client.post('/model/delete', json={
+        'model_version': 'nonexistent_model'
+    })
+    data = json.loads(response.data)
+    assert response.status_code == 404
+    assert 'error' in data
+    assert data['error'] == 'Model not found'
+
+    # Test deleting default model
+    response = client.post('/model/delete', json={
+        'model_version': 'default'
+    })
+    data = json.loads(response.data)
+    assert response.status_code == 400
+    assert 'error' in data
+    assert data['error'] == 'Cannot delete the default model'
+
+    # Test missing model version
+    response = client.post('/model/delete', json={})
+    data = json.loads(response.data)
+    assert response.status_code == 400
+    assert 'error' in data
+    assert data['error'] == 'Model version is required'
+
+    # Test successful model deletion
+    # First create a test model file
+    test_model_path = 'models/test_model.pkl'
+    os.makedirs('models', exist_ok=True)
+    with open(test_model_path, 'wb') as f:
+        pickle.dump({'test': 'model'}, f)
+
+    response = client.post('/model/delete', json={
+        'model_version': 'test_model'
+    })
+    data = json.loads(response.data)
+    assert response.status_code == 200
+    assert 'message' in data
+    assert data['message'] == 'Model deleted successfully'
+    assert not os.path.exists(test_model_path)  # Verify file was deleted

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, act } from '@testing-library/react'
-import Dashboard from '../src/app/page'
+import Dashboard from '../src/app/dashboard/page'
 
 describe('Dashboard Component', () => {
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe('Dashboard Component', () => {
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve, 0));
         });
-        expect(screen.getByText(/ChurnWatch Prediction Dashboard/i)).toBeInTheDocument();
+        expect(screen.getByText(/Customer Churn Predictions/i)).toBeInTheDocument();
     });
 
     test('upload button is disabled when no file is selected', async () => {

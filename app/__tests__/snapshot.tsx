@@ -1,11 +1,15 @@
-import { render, act } from '@testing-library/react'
-import Dashboard from '../src/app/page'
+import { render } from '@testing-library/react'
+import Dashboard from '../src/app/dashboard/page'
+import Home from '../src/app/page'
 
-it('renders Dashboard component unchanged', async () => {
-    let container;
-    await act(async () => {
-        const result = render(<Dashboard />);
-        container = result.container;
-    });
-    expect(container).toMatchSnapshot();
-});
+describe('Component Snapshots', () => {
+    test('Dashboard component snapshot', () => {
+        const { container } = render(<Dashboard />)
+        expect(container).toMatchSnapshot()
+    })
+
+    test('Home component snapshot', () => {
+        const { container } = render(<Home />)
+        expect(container).toMatchSnapshot()
+    })
+})

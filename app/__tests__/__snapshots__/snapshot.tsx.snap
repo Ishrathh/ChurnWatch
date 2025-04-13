@@ -1,20 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders Dashboard component unchanged 1`] = `
+exports[`Component Snapshots Dashboard component snapshot 1`] = `
 <div>
-  <section
-    class="p-8"
+  <div
+    class="min-h-screen bg-gray-50 p-8 pt-24"
   >
-    <h1
-      class="flex justify-center w-full text-2xl tracking-tight font-bold mb-8"
-    >
-      ChurnWatch Prediction Dashboard
-    </h1>
     <div
-      class="flex justify-between gap-8"
+      class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"
     >
       <div
-        class="rounded-xl border bg-card text-card-foreground shadow mb-8 w-full"
+        class="rounded-xl border bg-card text-card-foreground shadow"
       >
         <div
           class="flex flex-col space-y-1.5 p-6"
@@ -26,27 +21,31 @@ exports[`renders Dashboard component unchanged 1`] = `
           </div>
         </div>
         <div
-          class="p-6 pt-0 flex gap-4"
+          class="p-6 pt-0 space-y-4"
         >
-          <input
-            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm max-w-sm hover:bg-primary-foreground"
-            type="file"
-          />
-          <button
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
-            disabled=""
+          <div
+            class="flex gap-4"
           >
-            Upload CSV
-          </button>
-          <button
-            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 bg-red-800"
-          >
-            Reset All Data
-          </button>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm max-w-sm"
+              type="file"
+            />
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+              disabled=""
+            >
+              Upload CSV
+            </button>
+            <button
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 h-9 px-4 py-2"
+            >
+              Reset All Data
+            </button>
+          </div>
         </div>
       </div>
       <div
-        class="rounded-xl border bg-card text-card-foreground shadow mb-8 w-full"
+        class="rounded-xl border bg-card text-card-foreground shadow"
       >
         <div
           class="flex flex-col space-y-1.5 p-6"
@@ -61,7 +60,7 @@ exports[`renders Dashboard component unchanged 1`] = `
           class="p-6 pt-0 space-y-4"
         >
           <div
-            class="border border-gray-300 rounded-md p-4 grid grid-cols-2"
+            class="grid grid-cols-2 gap-4 p-4 border rounded-lg"
           >
             <p
               class="text-sm text-gray-600"
@@ -142,7 +141,8 @@ exports[`renders Dashboard component unchanged 1`] = `
               Retrain Model
             </button>
             <button
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 bg-red-800"
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 h-9 px-4 py-2"
+              disabled=""
             >
               Delete Model
             </button>
@@ -175,7 +175,7 @@ exports[`renders Dashboard component unchanged 1`] = `
               class="[&_tr]:border-b"
             >
               <tr
-                class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted [&_*]:text-center"
+                class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
               >
                 <th
                   class="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
@@ -206,7 +206,7 @@ exports[`renders Dashboard component unchanged 1`] = `
                 class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
               >
                 <td
-                  class="align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-center p-2"
+                  class="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] text-center"
                   colspan="4"
                 >
                   No customers found
@@ -217,6 +217,89 @@ exports[`renders Dashboard component unchanged 1`] = `
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</div>
+`;
+
+exports[`Component Snapshots Home component snapshot 1`] = `
+<div>
+  <div
+    class="min-h-screen bg-gray-900 text-white"
+  >
+    <div
+      class="relative h-screen flex items-center"
+    >
+      <div
+        class="absolute inset-0 z-0"
+      >
+        <img
+          alt="Data analytics dashboard"
+          class="object-cover brightness-50"
+          data-nimg="fill"
+          decoding="async"
+          sizes="100vw"
+          src="/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=3840&q=75"
+          srcset="/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D2000&w=3840&q=75 3840w"
+          style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+        />
+      </div>
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10"
+      >
+        <div
+          class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+        >
+          <div>
+            <h1
+              class="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl"
+            >
+              <span
+                class="block"
+              >
+                Predict Customer Churn
+              </span>
+              <span
+                class="block text-blue-400"
+              >
+                with ChurnWatch
+              </span>
+            </h1>
+            <p
+              class="mt-6 text-xl text-gray-300 max-w-3xl"
+            >
+              ChurnWatch helps businesses predict and prevent customer churn using advanced machine learning algorithms. Get actionable insights to retain your valuable customers.
+            </p>
+            <div
+              class="mt-8"
+            >
+              <a
+                class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-colors duration-200"
+                href="/dashboard"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+          <div
+            class="hidden lg:block relative h-[600px] rounded-lg overflow-hidden shadow-2xl"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 z-10"
+            />
+            <img
+              alt="Data analytics dashboard"
+              class="object-cover"
+              data-nimg="fill"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              src="/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=3840&q=75"
+              srcset="/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=384&q=75 384w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1607944024060-0450380ddd33%3Fauto%3Dformat%26fit%3Dcrop%26q%3D80%26w%3D1200&w=3840&q=75 3840w"
+              style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
