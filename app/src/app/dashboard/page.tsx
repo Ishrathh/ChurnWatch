@@ -16,6 +16,19 @@ export default function Dashboard() {
     const [selectedModel, setSelectedModel] = useState<string>('default');
     const [isDeleting, setIsDeleting] = useState(false);
     const [isRetraining, setIsRetraining] = useState(false);
+    const [currentUser, setCurrentUser] = useState<{ name?: string; email: string } | null>(null);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const res = await fetch('/api/auth/user');
+            const data = await res.json();
+            if (res.ok && data.authenticated) {
+                setCurrentUser(data.user);
+            }
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    };
 
     const fetchCustomers = async () => {
         const res = await fetch('/api/customers', { method: 'GET' });
@@ -29,7 +42,11 @@ export default function Dashboard() {
         setModels(data.models);
     }
 
-    useEffect(() => { fetchCustomers(); fetchModels(); }, []);
+    useEffect(() => {
+        fetchCustomers();
+        fetchModels();
+        fetchCurrentUser();
+    }, []);
 
     const handlePredict = async (customerId: number) => {
         try {
@@ -195,6 +212,28 @@ export default function Dashboard() {
 
     return (
         <div className="min-h-screen bg-gray-50 p-8 pt-24">
+            {/* Welcome Banner */}
+            <Card className="mb-8 bg-blue-50 border-blue-200">
+                <CardContent className="pt-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-2xl font-bold text-blue-800">
+                                Welcome back, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'}!
+                            </h2>
+                            <p className="text-blue-600 mt-1">
+                                Here's your ChurnWatch dashboard for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                            </p>
+                        </div>
+                        <div className="hidden md:block">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                                <path d="m9 12 2 2 4-4" />
+                            </svg>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <Card>
                     <CardHeader>
@@ -346,4 +385,4 @@ export default function Dashboard() {
             </Card>
         </div>
     );
-} 
+}

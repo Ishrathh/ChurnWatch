@@ -1,13 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { getAuthStatus } from '@/lib/client-auth';
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
     const isHomePage = pathname === '/';
 
     useEffect(() => {
@@ -23,10 +27,64 @@ export default function Navigation() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Check if user is logged in
+    useEffect(() => {
+        const checkAuthStatus = async () => {
+            try {
+                const { authenticated } = await getAuthStatus();
+                setIsLoggedIn(authenticated);
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+                setIsLoggedIn(false);
+            }
+        };
+
+        checkAuthStatus();
+
+        // Re-check auth status when route changes
+        const handleRouteChange = () => {
+            checkAuthStatus();
+        };
+
+        window.addEventListener('focus', handleRouteChange);
+        return () => {
+            window.removeEventListener('focus', handleRouteChange);
+        };
+    }, [pathname]);
+
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            // Redirect to home page after logout
+            router.push('/');
+            setIsLoggedIn(false);
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
     const navItems = [
         { name: 'Home', path: '/' },
-        { name: 'Dashboard', path: '/dashboard' },
+        { name: 'Dashboard', path: '/dashboard', requiresAuth: true },
     ];
+
+    const authNavItems = isLoggedIn
+        ? [{ name: 'Logout', action: handleLogout }]
+        : [
+            { name: 'Login', path: '/login' },
+            { name: 'Sign Up', path: '/signup' },
+        ];
+
+    // Filter nav items based on auth status
+    const filteredNavItems = navItems.filter(
+        (item) => !item.requiresAuth || (item.requiresAuth && isLoggedIn)
+    );
 
     return (
         <nav className={`fixed w-full z-50 transition-all duration-300 ${isHomePage && !isScrolled
@@ -45,8 +103,8 @@ export default function Navigation() {
                     </div>
 
                     {/* Desktop menu */}
-                    <div className="hidden sm:flex sm:items-center">
-                        {navItems.map((item) => (
+                    <div className="hidden sm:flex sm:items-center space-x-2">
+                        {filteredNavItems.map((item) => (
                             <Link
                                 key={item.path}
                                 href={item.path}
@@ -61,6 +119,41 @@ export default function Navigation() {
                             >
                                 {item.name}
                             </Link>
+                        ))}
+
+                        {/* Auth navigation items */}
+                        {authNavItems.map((item, index) => (
+                            'action' in item ? (
+                                <Button
+                                    key={item.name}
+                                    onClick={item.action}
+                                    variant="ghost"
+                                    className={`${isHomePage && !isScrolled
+                                        ? 'text-white hover:bg-blue-600 hover:bg-opacity-70'
+                                        : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                        }`}
+                                >
+                                    {item.name}
+                                </Button>
+                            ) : (
+                                <Link
+                                    key={item.path}
+                                    href={item.path}
+                                    className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === item.path
+                                        ? isHomePage && !isScrolled
+                                            ? 'text-white bg-blue-600 bg-opacity-70'
+                                            : 'text-blue-600 bg-blue-50'
+                                        : isHomePage && !isScrolled
+                                            ? 'text-white hover:bg-blue-600 hover:bg-opacity-70'
+                                            : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                        }${index === authNavItems.length - 1 && !isLoggedIn
+                                            ? ' bg-blue-600 text-white hover:bg-blue-700 hover:text-white'
+                                            : ''
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            )
                         ))}
                     </div>
 
@@ -112,7 +205,7 @@ export default function Navigation() {
             {isMenuOpen && (
                 <div className="sm:hidden bg-white">
                     <div className="px-2 pt-2 pb-3 space-y-1">
-                        {navItems.map((item) => (
+                        {filteredNavItems.map((item) => (
                             <Link
                                 key={item.path}
                                 href={item.path}
@@ -125,9 +218,37 @@ export default function Navigation() {
                                 {item.name}
                             </Link>
                         ))}
+
+                        {/* Auth navigation items for mobile */}
+                        {authNavItems.map((item) => (
+                            'action' in item ? (
+                                <button
+                                    key={item.name}
+                                    onClick={() => {
+                                        item.action();
+                                        setIsMenuOpen(false);
+                                    }}
+                                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+                                >
+                                    {item.name}
+                                </button>
+                            ) : (
+                                <Link
+                                    key={item.path}
+                                    href={item.path}
+                                    className={`block px-3 py-2 rounded-md text-base font-medium ${pathname === item.path
+                                        ? 'text-blue-600 bg-blue-50'
+                                        : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                        }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            )
+                        ))}
                     </div>
                 </div>
             )}
         </nav>
     );
-} 
+}
