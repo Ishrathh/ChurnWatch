@@ -102,7 +102,7 @@ def retrain_model(df):
         ('Random Forest', RandomForestClassifier(random_state=42)),
         ('Gradient Boosting', GradientBoostingClassifier(random_state=42)),
         ('Logistic Regression', LogisticRegression(max_iter=1000, random_state=42)),
-        ('Neural Network', MLPClassifier(hidden_layer_sizes=(64, 32),
+        ('Neural Network', MLPClassifier(hidden_layer_sizes=(64, 64, 32),
                                          max_iter=1000, random_state=42)),
         ('XGBoost', xgb.XGBClassifier(random_state=42))
     ]
