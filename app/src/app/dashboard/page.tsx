@@ -221,7 +221,7 @@ export default function Dashboard() {
                                 Welcome back, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'}!
                             </h2>
                             <p className="text-blue-600 mt-1">
-                                Here's your ChurnWatch dashboard for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                Here&apos;s your ChurnWatch dashboard for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                             </p>
                         </div>
                         <div className="hidden md:block">
